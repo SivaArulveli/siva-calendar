@@ -31,14 +31,27 @@ export function TamilCalendar() {
     return arr;
   }, [startWeekday, monthMeta.days]);
 
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + monthMeta.days - 1);
+
   const today = new Date();
-  const sameMonth =
-    today.getFullYear() === startDate.getFullYear() &&
-    today.getMonth() === startDate.getMonth() &&
-    today.getDate() >= startDate.getDate();
-  const todayInMonth = sameMonth
-    ? today.getDate() - startDate.getDate() + 1
-    : -1;
+  const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+  const todayInMonth =
+    todayTime >= startDate.getTime() && todayTime <= endDate.getTime()
+      ? Math.round((todayTime - startDate.getTime()) / 86400000) + 1
+      : -1;
+
+  // Map Tamil day -> Gregorian {day, monthShort}
+  const gregFor = (tamilDay: number) => {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + tamilDay - 1);
+    return {
+      day: d.getDate(),
+      mon: d.toLocaleDateString(undefined, { month: "short" }),
+    };
+  };
+
+  const rangeLabel = `${startDate.toLocaleDateString(undefined, { day: "numeric", month: "short" })} – ${endDate.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}`;
 
   return (
     <div className="w-full max-w-2xl mx-auto">
