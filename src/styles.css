@@ -63,38 +63,64 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  /* Tamil mechanical calendar — anodized brass + deep teal */
+  --background: oklch(0.22 0.015 220);
+  --foreground: oklch(0.95 0.02 85);
+  --card: oklch(0.28 0.02 220);
+
+  /* Brushed metal palette */
+  --metal-base: oklch(0.78 0.04 85);
+  --metal-light: oklch(0.88 0.05 85);
+  --metal-dark: oklch(0.55 0.05 80);
+  --metal-shadow: oklch(0.18 0.02 220);
+  --brass: oklch(0.72 0.13 80);
+  --brass-deep: oklch(0.5 0.11 70);
+  --engraved: oklch(0.18 0.015 220);
+  --accent-red: oklch(0.55 0.2 25);
+
+  --gradient-brushed: repeating-linear-gradient(
+    90deg,
+    var(--metal-base) 0px,
+    var(--metal-light) 1px,
+    var(--metal-base) 2px,
+    var(--metal-dark) 3px
+  );
+  --gradient-brass: linear-gradient(180deg, oklch(0.82 0.13 85), var(--brass) 50%, var(--brass-deep));
+  --gradient-panel: linear-gradient(180deg, oklch(0.32 0.02 220), oklch(0.2 0.02 220));
+
+  --shadow-engraved: inset 0 1px 2px rgba(0,0,0,0.7), inset 0 -1px 1px rgba(255,255,255,0.08);
+  --shadow-raised: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+  --shadow-deep: 0 10px 30px -8px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.4);
+
+  --card-foreground: oklch(0.95 0.02 85);
+  --popover: oklch(0.28 0.02 220);
+  --popover-foreground: oklch(0.95 0.02 85);
+  --primary: var(--brass);
+  --primary-foreground: oklch(0.18 0.015 220);
+  --secondary: oklch(0.32 0.02 220);
+  --secondary-foreground: oklch(0.95 0.02 85);
+  --muted: oklch(0.3 0.02 220);
+  --muted-foreground: oklch(0.7 0.03 85);
+  --accent: var(--brass);
+  --accent-foreground: oklch(0.18 0.015 220);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.98 0.01 85);
+  --border: oklch(0.4 0.02 220);
+  --input: oklch(0.32 0.02 220);
+  --ring: var(--brass);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar: oklch(0.22 0.015 220);
+  --sidebar-foreground: oklch(0.95 0.02 85);
+  --sidebar-primary: var(--brass);
+  --sidebar-primary-foreground: oklch(0.18 0.015 220);
+  --sidebar-accent: oklch(0.3 0.02 220);
+  --sidebar-accent-foreground: oklch(0.95 0.02 85);
+  --sidebar-border: oklch(0.4 0.02 220);
+  --sidebar-ring: var(--brass);
 }
 
 .dark {
@@ -141,4 +167,47 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+/* === Tamil Mechanical Calendar utilities === */
+.brushed-metal {
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.06) 0px,
+      rgba(255,255,255,0.12) 1px,
+      rgba(0,0,0,0.05) 2px,
+      rgba(0,0,0,0.10) 3px),
+    var(--gradient-brass);
+  background-blend-mode: overlay, normal;
+}
+.brushed-metal-plate {
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.05) 0px,
+      rgba(255,255,255,0.10) 1px,
+      rgba(0,0,0,0.04) 2px,
+      rgba(0,0,0,0.08) 3px),
+    linear-gradient(180deg, oklch(0.82 0.04 85), oklch(0.68 0.05 80));
+  background-blend-mode: overlay, normal;
+}
+.engraved-text {
+  color: var(--engraved);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+}
+.embossed-text {
+  color: oklch(0.98 0.02 85);
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.15);
+}
+.panel-recessed {
+  background: var(--gradient-panel);
+  box-shadow: var(--shadow-engraved);
+  border: 1px solid oklch(0.15 0.015 220);
+}
+.tamil-font {
+  font-family: "Noto Sans Tamil", "Latha", "Tamil Sangam MN", system-ui, sans-serif;
+}
+.rivet {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, oklch(0.85 0.04 85), oklch(0.45 0.05 80) 70%, oklch(0.25 0.02 80));
+  box-shadow: inset 0 -1px 1px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.5);
 }

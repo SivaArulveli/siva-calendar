@@ -1,26 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { TamilCalendar } from "@/components/TamilCalendar";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Tamil Perpetual Calendar · தமிழ் நிரந்தர நாட்காட்டி" },
+      {
+        name: "description",
+        content:
+          "A mechanical-style Tamil perpetual digital calendar covering the full 60-year cycle from Prabhava to Akshaya, with sliding day-header alignment.",
+      },
+    ],
+    links: [
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&display=swap",
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <main className="min-h-screen bg-background py-10 px-4">
+      <TamilCalendar />
+      <footer className="text-center text-xs text-muted-foreground mt-8 max-w-2xl mx-auto opacity-60">
+        Mimicking the physical mechanical Tamil calendar — slide the weekday strip to align with the 1st, just like the brass shifter on the wooden plate.
+      </footer>
+    </main>
+  );
 }
