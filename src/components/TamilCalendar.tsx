@@ -31,14 +31,27 @@ export function TamilCalendar() {
     return arr;
   }, [startWeekday, monthMeta.days]);
 
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + monthMeta.days - 1);
+
   const today = new Date();
-  const sameMonth =
-    today.getFullYear() === startDate.getFullYear() &&
-    today.getMonth() === startDate.getMonth() &&
-    today.getDate() >= startDate.getDate();
-  const todayInMonth = sameMonth
-    ? today.getDate() - startDate.getDate() + 1
-    : -1;
+  const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+  const todayInMonth =
+    todayTime >= startDate.getTime() && todayTime <= endDate.getTime()
+      ? Math.round((todayTime - startDate.getTime()) / 86400000) + 1
+      : -1;
+
+  // Map Tamil day -> Gregorian {day, monthShort}
+  const gregFor = (tamilDay: number) => {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + tamilDay - 1);
+    return {
+      day: d.getDate(),
+      mon: d.toLocaleDateString(undefined, { month: "short" }),
+    };
+  };
+
+  const rangeLabel = `${startDate.toLocaleDateString(undefined, { day: "numeric", month: "short" })} – ${endDate.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}`;
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -86,9 +99,9 @@ export function TamilCalendar() {
             <span className="tamil-font kumkum-text font-semibold">
               {TAMIL_WEEKDAYS[startWeekday].ta}
             </span>
-            <span className="ml-2 opacity-70">
-              ({startDate.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })})
-            </span>
+          </div>
+          <div className="serif-font text-[11px] sm:text-xs mt-1 font-semibold">
+            {rangeLabel}
           </div>
         </div>
 
@@ -127,6 +140,8 @@ export function TamilCalendar() {
                   return <div key={i} className="aspect-square" />;
                 }
                 const isToday = n === todayInMonth;
+                const g = gregFor(n);
+                const isMonthFirst = g.day === 1;
                 return (
                   <div
                     key={i}
@@ -136,18 +151,25 @@ export function TamilCalendar() {
                     style={{ boxShadow: "var(--shadow-raised)" }}
                   >
                     <span
-                      className={`text-base sm:text-lg md:text-xl font-bold leading-none ${
+                      className={`text-sm sm:text-base md:text-lg font-bold leading-none ${
                         isToday ? "embossed-text" : "engraved-text"
                       }`}
                     >
                       {n}
                     </span>
                     <span
-                      className={`tamil-font text-[9px] sm:text-[10px] leading-none mt-0.5 opacity-80 ${
+                      className={`tamil-font text-[8px] sm:text-[9px] leading-none mt-0.5 opacity-70 ${
                         isToday ? "embossed-text" : "engraved-text"
                       }`}
                     >
                       {toTamilNumber(n)}
+                    </span>
+                    <span
+                      className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
+                        isToday ? "embossed-text" : "kumkum-text"
+                      }`}
+                    >
+                      {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
                     </span>
                   </div>
                 );
