@@ -30,10 +30,12 @@ jobs:
       - name: Find Output Directory
         id: find_dir
         run: |
-          if [ -d "dist" ]; then
-            echo "dir=dist" >> $GITHUB_OUTPUT
+          if [ -d "dist/client" ]; then
+            echo "dir=dist/client" >> $GITHUB_OUTPUT
           elif [ -d ".output/public" ]; then
             echo "dir=.output/public" >> $GITHUB_OUTPUT
+          elif [ -d "dist" ]; then
+            echo "dir=dist" >> $GITHUB_OUTPUT
           elif [ -d "build" ]; then
             echo "dir=build" >> $GITHUB_OUTPUT
           else
