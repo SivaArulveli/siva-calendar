@@ -200,17 +200,12 @@ export function TamilCalendar() {
                     >
                       {n}
                     </span>
-                    <span
-                      className={`tamil-font text-[8px] sm:text-[9px] leading-none mt-0.5 opacity-70 ${
-                        isToday ? "embossed-text" : "engraved-text"
-                      }`}
-                    >
-                      {toTamilNumber(n)}
-                    </span>
                     {showGregorian && (
                       <span
-                        className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
-                          isToday ? "embossed-text" : "kumkum-text"
+                        className={`serif-font kumkum-text font-bold leading-none mt-1 ${
+                          isMonthFirst
+                            ? "text-[9px] sm:text-[11px]"
+                            : "text-[11px] sm:text-sm"
                         }`}
                       >
                         {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
