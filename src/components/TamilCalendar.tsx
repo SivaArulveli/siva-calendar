@@ -16,6 +16,7 @@ export function TamilCalendar() {
   );
   const [yearIdx, setYearIdx] = useState(todayYearIdx);
   const [monthIdx, setMonthIdx] = useState(0);
+  const [showGregorian, setShowGregorian] = useState(true);
 
   const startWeekday = getStartWeekday(yearIdx, monthIdx);
   const monthMeta = TAMIL_MONTHS[monthIdx];
@@ -105,6 +106,31 @@ export function TamilCalendar() {
           </div>
         </div>
 
+        {/* Toggle: show Gregorian overlap */}
+        <div className="flex items-center justify-end mb-2">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={showGregorian}
+            onClick={() => setShowGregorian((v) => !v)}
+            className="flex items-center gap-2 panel-recessed rounded-full px-3 py-1.5 text-[11px] sm:text-xs serif-font"
+          >
+            <span className="kumkum-text font-semibold">English dates</span>
+            <span
+              className={`relative inline-block w-9 h-5 rounded-full transition-colors ${
+                showGregorian ? "saffron-tile" : "gold-tile"
+              }`}
+              style={{ boxShadow: "var(--shadow-raised)" }}
+            >
+              <span
+                className={`absolute top-0.5 w-4 h-4 rounded-full bg-background transition-all ${
+                  showGregorian ? "left-[18px]" : "left-0.5"
+                }`}
+              />
+            </span>
+          </button>
+        </div>
+
         {/* Calendar grid panel */}
         <div className="panel-recessed rounded-2xl p-2.5 sm:p-4">
           {/* Weekday header */}
@@ -164,13 +190,15 @@ export function TamilCalendar() {
                     >
                       {toTamilNumber(n)}
                     </span>
-                    <span
-                      className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
-                        isToday ? "embossed-text" : "kumkum-text"
-                      }`}
-                    >
-                      {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
-                    </span>
+                    {showGregorian && (
+                      <span
+                        className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
+                          isToday ? "embossed-text" : "kumkum-text"
+                        }`}
+                      >
+                        {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
+                      </span>
+                    )}
                   </div>
                 );
               })}
