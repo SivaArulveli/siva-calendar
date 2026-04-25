@@ -16,6 +16,7 @@ export function TamilCalendar() {
   );
   const [yearIdx, setYearIdx] = useState(todayYearIdx);
   const [monthIdx, setMonthIdx] = useState(0);
+  const [showGregorian, setShowGregorian] = useState(true);
 
   const startWeekday = getStartWeekday(yearIdx, monthIdx);
   const monthMeta = TAMIL_MONTHS[monthIdx];
