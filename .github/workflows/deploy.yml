@@ -41,8 +41,9 @@ jobs:
           fi
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ${{ steps.find_dir.outputs.dir }} --project-name=siva-calendar
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "Deploying directory: ${{ steps.find_dir.outputs.dir }}"
+          npx wrangler pages deploy ${{ steps.find_dir.outputs.dir }} --project-name=siva-calendar || exit 1
