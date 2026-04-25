@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import sivaAvatar from "@/assets/siva-avatar.jpg";
 import {
   TAMIL_YEARS_60,
   TAMIL_MONTHS,
