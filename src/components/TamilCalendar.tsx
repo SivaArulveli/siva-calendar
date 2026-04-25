@@ -66,18 +66,34 @@ export function TamilCalendar() {
 
         {/* Header crown */}
         <div className="text-center mb-4 sm:mb-6">
-          <div className="inline-flex items-center gap-2 mb-2">
+          <div className="inline-flex items-center gap-2 mb-3">
             <span className="kumkum-text text-xl">❀</span>
             <span className="tamil-font kumkum-text text-sm sm:text-base font-semibold tracking-widest">
               ஓம்
             </span>
             <span className="kumkum-text text-xl">❀</span>
           </div>
-          <h1 className="tamil-font kumkum-text text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide leading-tight">
-            தமிழ் நிரந்தர நாட்காட்டி
+
+          {/* Avatar */}
+          <div className="flex justify-center mb-3">
+            <div
+              className="relative rounded-full p-1 saffron-tile"
+              style={{ boxShadow: "var(--shadow-deep)" }}
+            >
+              <img
+                src={sivaAvatar}
+                alt="Siva Arul Vaibhava"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover"
+                style={{ filter: "sepia(0.25) contrast(1.05)" }}
+              />
+            </div>
+          </div>
+
+          <h1 className="tamil-font kumkum-text text-xl sm:text-2xl md:text-3xl font-bold tracking-wide leading-tight">
+            சிவ அருள் வைபவ பஞ்சாங்கம்
           </h1>
           <p className="serif-font text-[10px] sm:text-xs tracking-[0.25em] uppercase mt-1.5 text-muted-foreground">
-            Tamil Perpetual Calendar · 60-Year Cycle
+            Siva Arul Vaibhava Panchangam · 60-Year Cycle
           </p>
           <div className="ornate-divider mt-4 mx-auto max-w-xs" />
         </div>
