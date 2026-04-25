@@ -27,6 +27,24 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Prepare Cloudflare Pages Output
+        run: |
+          echo "=== BUILD OUTPUT ==="
+          ls -la dist/ || true
+          ls -la dist/client/ || true
+          ls -la dist/server/ || true
+          
+          if [ -d "dist/server" ]; then
+            echo "Found dist/server. Moving to dist/client/_worker.js"
+            if [ -f "dist/server/index.js" ]; then
+              cp dist/server/index.js dist/client/_worker.js
+            else
+              cp -R dist/server dist/client/_worker.js
+            fi
+            echo "=== FINAL CLIENT DIRECTORY ==="
+            ls -la dist/client/ || true
+          fi
+
       - name: Find Output Directory
         id: find_dir
         run: |
