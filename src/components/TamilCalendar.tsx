@@ -190,13 +190,15 @@ export function TamilCalendar() {
                     >
                       {toTamilNumber(n)}
                     </span>
-                    <span
-                      className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
-                        isToday ? "embossed-text" : "kumkum-text"
-                      }`}
-                    >
-                      {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
-                    </span>
+                    {showGregorian && (
+                      <span
+                        className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
+                          isToday ? "embossed-text" : "kumkum-text"
+                        }`}
+                      >
+                        {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
+                      </span>
+                    )}
                   </div>
                 );
               })}
