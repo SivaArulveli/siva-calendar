@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useMotionValue, useAnimation } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   TAMIL_YEARS_60,
   TAMIL_MONTHS,
@@ -9,14 +9,11 @@ import {
   toTamilNumber,
 } from "@/lib/tamil-calendar";
 
-// Cell width must be consistent for grid + sliding header
-const CELL = 56; // px
-const GAP = 6; // px
-const STEP = CELL + GAP;
-
 export function TamilCalendar() {
-  // Default: current Gregorian year mapped back into the cycle (Prabhava=1987)
-  const todayYearIdx = useMemo(() => ((new Date().getFullYear() - 1987) % 60 + 60) % 60, []);
+  const todayYearIdx = useMemo(
+    () => ((new Date().getFullYear() - 1987) % 60 + 60) % 60,
+    [],
+  );
   const [yearIdx, setYearIdx] = useState(todayYearIdx);
   const [monthIdx, setMonthIdx] = useState(0);
 
@@ -25,195 +22,141 @@ export function TamilCalendar() {
   const yearMeta = TAMIL_YEARS_60[yearIdx];
   const startDate = getTamilMonthStartDate(yearIdx, monthIdx);
 
-  // Sliding day-header offset (number of cells shifted right)
-  const [shift, setShift] = useState(0);
-  const x = useMotionValue(0);
-  const controls = useAnimation();
+  // Build a 7-column traditional grid: leading blanks + dates
+  const cells = useMemo(() => {
+    const arr: (number | null)[] = [];
+    for (let i = 0; i < startWeekday; i++) arr.push(null);
+    for (let d = 1; d <= monthMeta.days; d++) arr.push(d);
+    while (arr.length % 7 !== 0) arr.push(null);
+    return arr;
+  }, [startWeekday, monthMeta.days]);
 
-  // When year/month changes, auto-align day strip so weekday of 1st sits over column 1
-  useEffect(() => {
-    // Day strip is a long repeating sequence. Column 1 is at x=0 in grid.
-    // We render strip starting from index `shift` with weekday names cycling.
-    // To make day-of-1st align with col 1, set shift so weekdays[shift % 7] === startWeekday
-    const target = ((startWeekday) % 7 + 7) % 7;
-    setShift(target);
-    controls.start({ x: 0, transition: { type: "spring", stiffness: 220, damping: 22 } });
-    x.set(0);
-  }, [yearIdx, monthIdx, startWeekday, controls, x]);
-
-  // Build a long enough day-name strip — enough to span 32 columns + slack
-  const stripLength = 40;
-  const dayStrip = useMemo(() => {
-    return Array.from({ length: stripLength }, (_, i) => TAMIL_WEEKDAYS[(i + shift) % 7]);
-  }, [shift]);
-
-  // Snap on drag end
-  const stripRef = useRef<HTMLDivElement>(null);
-  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
-    const dx = info.offset.x;
-    const steps = Math.round(dx / STEP);
-    if (steps !== 0) {
-      // Negative steps shifts content left → consume cells from start (increase shift)
-      setShift((prev) => ((prev - steps) % 7 + 7) % 7);
-    }
-    controls.start({ x: 0, transition: { type: "spring", stiffness: 260, damping: 24 } });
-  };
-
-  const numbers = Array.from({ length: monthMeta.days }, (_, i) => i + 1);
-
-  // Highlight today if applicable
   const today = new Date();
   const sameMonth =
     today.getFullYear() === startDate.getFullYear() &&
     today.getMonth() === startDate.getMonth() &&
     today.getDate() >= startDate.getDate();
-  const todayInMonth = sameMonth ? today.getDate() - startDate.getDate() + 1 : -1;
+  const todayInMonth = sameMonth
+    ? today.getDate() - startDate.getDate() + 1
+    : -1;
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      {/* Outer plate */}
-      <div
-        className="relative rounded-3xl p-6 md:p-10 brushed-metal-plate"
-        style={{ boxShadow: "var(--shadow-deep)" }}
-      >
-        {/* Rivets */}
-        {[
-          "top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3",
-        ].map((c) => (
-          <div key={c} className={`rivet absolute ${c}`} />
+    <div className="w-full max-w-2xl mx-auto">
+      {/* Outer temple plate */}
+      <div className="relative rounded-3xl p-4 sm:p-6 md:p-8 temple-plate" style={{ boxShadow: "var(--shadow-deep)" }}>
+        {/* Corner kolam dots */}
+        {["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"].map((c) => (
+          <div key={c} className={`kolam-dot absolute ${c}`} />
         ))}
 
-        {/* Title */}
-        <div className="text-center mb-6">
-          <h1 className="tamil-font engraved-text text-3xl md:text-4xl font-bold tracking-wider">
+        {/* Header crown */}
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <span className="kumkum-text text-xl">❀</span>
+            <span className="tamil-font kumkum-text text-sm sm:text-base font-semibold tracking-widest">
+              ஓம்
+            </span>
+            <span className="kumkum-text text-xl">❀</span>
+          </div>
+          <h1 className="tamil-font kumkum-text text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide leading-tight">
             தமிழ் நிரந்தர நாட்காட்டி
           </h1>
-          <p className="engraved-text/80 text-xs md:text-sm tracking-[0.3em] uppercase mt-1 opacity-70">
+          <p className="serif-font text-[10px] sm:text-xs tracking-[0.25em] uppercase mt-1.5 text-muted-foreground">
             Tamil Perpetual Calendar · 60-Year Cycle
           </p>
+          <div className="ornate-divider mt-4 mx-auto max-w-xs" />
         </div>
 
-        {/* Year + Month selector panels */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Year + Month selectors — stack on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 sm:mb-5">
           <YearDial yearIdx={yearIdx} setYearIdx={setYearIdx} />
           <MonthDial monthIdx={monthIdx} setMonthIdx={setMonthIdx} />
         </div>
 
-        {/* Status bar */}
-        <div className="panel-recessed rounded-xl p-3 mb-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="text-sm">
-            <span className="embossed-text tamil-font text-base font-semibold">
-              {yearMeta.ta} வருடம், {monthMeta.ta} மாதம்
-            </span>
-            <span className="text-muted-foreground ml-3 text-xs">
-              {yearMeta.en} · {monthMeta.en}
-            </span>
+        {/* Status panel */}
+        <div className="panel-recessed rounded-xl p-3 sm:p-4 mb-4 sm:mb-5 text-center">
+          <div className="tamil-font kumkum-text text-base sm:text-lg font-semibold leading-snug">
+            {yearMeta.ta} வருடம் · {monthMeta.ta} மாதம்
           </div>
-          <div className="text-xs text-muted-foreground">
-            1st falls on{" "}
-            <span className="tamil-font text-primary font-semibold">
+          <div className="serif-font text-xs text-muted-foreground mt-1 italic">
+            {yearMeta.en} · {monthMeta.en}
+          </div>
+          <div className="text-[11px] sm:text-xs text-muted-foreground mt-2">
+            <span className="opacity-70">பிறப்பு / Begins:</span>{" "}
+            <span className="tamil-font kumkum-text font-semibold">
               {TAMIL_WEEKDAYS[startWeekday].ta}
-            </span>{" "}
-            ({startDate.toDateString()})
+            </span>
+            <span className="ml-2 opacity-70">
+              ({startDate.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })})
+            </span>
           </div>
         </div>
 
-        {/* Calendar window */}
-        <div
-          className="panel-recessed rounded-2xl p-4 md:p-6 overflow-hidden"
-        >
-          {/* Sliding day-header */}
-          <div className="mb-3">
-            <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2 px-1 flex items-center justify-between">
-              <span>Slide weekday strip ←→ to align</span>
-              <button
-                onClick={() => {
-                  const target = ((startWeekday) % 7 + 7) % 7;
-                  setShift(target);
-                  controls.start({ x: 0, transition: { type: "spring", stiffness: 220, damping: 22 } });
-                }}
-                className="text-primary hover:underline"
+        {/* Calendar grid panel */}
+        <div className="panel-recessed rounded-2xl p-2.5 sm:p-4">
+          {/* Weekday header */}
+          <div className="grid grid-cols-7 gap-1 sm:gap-1.5 mb-1.5 sm:mb-2">
+            {TAMIL_WEEKDAYS.map((d, i) => (
+              <div
+                key={i}
+                className="saffron-tile rounded-md sm:rounded-lg flex flex-col items-center justify-center py-1.5 sm:py-2"
+                style={{ boxShadow: "var(--shadow-raised)" }}
               >
-                Auto-align
-              </button>
-            </div>
-            <div className="overflow-hidden rounded-md" style={{ width: "100%" }}>
-              <motion.div
-                ref={stripRef}
-                drag="x"
-                dragConstraints={{ left: -STEP * 14, right: STEP * 14 }}
-                dragElastic={0.1}
-                animate={controls}
-                style={{ x }}
-                onDragEnd={handleDragEnd}
-                className="flex cursor-grab active:cursor-grabbing select-none"
-              >
-                {dayStrip.map((d, i) => (
+                <span className="tamil-font embossed-text text-[10px] sm:text-xs font-bold leading-tight text-center">
+                  {d.ta}
+                </span>
+                <span className="embossed-text text-[8px] sm:text-[9px] opacity-80 leading-none mt-0.5 hidden sm:block">
+                  {d.en}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Date grid */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${yearIdx}-${monthIdx}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-7 gap-1 sm:gap-1.5"
+            >
+              {cells.map((n, i) => {
+                if (n === null) {
+                  return <div key={i} className="aspect-square" />;
+                }
+                const isToday = n === todayInMonth;
+                return (
                   <div
                     key={i}
-                    className="brushed-metal flex items-center justify-center rounded-md mr-[6px] flex-shrink-0"
-                    style={{
-                      width: CELL,
-                      height: CELL * 0.7,
-                      boxShadow: "var(--shadow-raised)",
-                    }}
+                    className={`relative aspect-square rounded-md sm:rounded-lg flex flex-col items-center justify-center transition-transform hover:scale-105 ${
+                      isToday ? "saffron-tile today-pulse" : "gold-tile"
+                    }`}
+                    style={{ boxShadow: "var(--shadow-raised)" }}
                   >
-                    <span className="tamil-font engraved-text text-xs md:text-sm font-bold leading-tight text-center px-1">
-                      {d.ta}
+                    <span
+                      className={`text-base sm:text-lg md:text-xl font-bold leading-none ${
+                        isToday ? "embossed-text" : "engraved-text"
+                      }`}
+                    >
+                      {n}
+                    </span>
+                    <span
+                      className={`tamil-font text-[9px] sm:text-[10px] leading-none mt-0.5 opacity-80 ${
+                        isToday ? "embossed-text" : "engraved-text"
+                      }`}
+                    >
+                      {toTamilNumber(n)}
                     </span>
                   </div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
 
-          {/* Date grid: 8 columns × 4 rows = 32 slots */}
-          <div
-            className="grid"
-            style={{
-              gridTemplateColumns: `repeat(8, ${CELL}px)`,
-              gap: `${GAP}px`,
-              justifyContent: "start",
-              overflowX: "auto",
-            }}
-          >
-            {Array.from({ length: 32 }, (_, i) => {
-              const n = i + 1;
-              const visible = n <= monthMeta.days;
-              const isToday = n === todayInMonth;
-              return (
-                <div
-                  key={n}
-                  className={`relative rounded-md flex flex-col items-center justify-center transition-all ${
-                    visible
-                      ? isToday
-                        ? "brushed-metal ring-2 ring-destructive"
-                        : "brushed-metal hover:brightness-110"
-                      : "opacity-20"
-                  }`}
-                  style={{
-                    width: CELL,
-                    height: CELL,
-                    boxShadow: visible ? "var(--shadow-raised)" : "none",
-                  }}
-                >
-                  {visible && (
-                    <>
-                      <span className="engraved-text text-lg md:text-xl font-bold leading-none">
-                        {n}
-                      </span>
-                      <span className="engraved-text tamil-font text-[10px] opacity-70 leading-none mt-0.5">
-                        {toTamilNumber(n)}
-                      </span>
-                    </>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <p className="text-[10px] text-muted-foreground mt-4 text-center italic">
-            Tamil months begin on Sankranti (Sun's zodiac transit) — between the 13th and 17th of a Gregorian month.
+          <p className="serif-font text-[10px] sm:text-xs text-muted-foreground mt-3 sm:mt-4 text-center italic px-2">
+            தமிழ் மாதங்கள் சங்கராந்தியில் தொடங்கும் — months begin on the Sun's zodiac transit (between the 13th – 17th).
           </p>
         </div>
       </div>
@@ -223,25 +166,25 @@ export function TamilCalendar() {
 
 function YearDial({ yearIdx, setYearIdx }: { yearIdx: number; setYearIdx: (n: number) => void }) {
   return (
-    <div className="panel-recessed rounded-xl p-3">
-      <label className="text-[10px] uppercase tracking-widest text-muted-foreground block mb-1.5 px-1">
-        Tamil Year · ஆண்டு
+    <div className="panel-recessed rounded-xl p-2.5 sm:p-3">
+      <label className="serif-font text-[10px] uppercase tracking-[0.2em] text-muted-foreground block mb-1.5 px-1 text-center">
+        ஆண்டு · Year
       </label>
-      <div className="flex items-center gap-2">
-        <DialButton onClick={() => setYearIdx((yearIdx + 59) % 60)}>‹</DialButton>
+      <div className="flex items-center gap-1.5">
+        <DialButton onClick={() => setYearIdx((yearIdx + 59) % 60)} aria-label="Previous year">‹</DialButton>
         <select
           value={yearIdx}
           onChange={(e) => setYearIdx(parseInt(e.target.value, 10))}
-          className="brushed-metal flex-1 rounded-md px-3 py-2 engraved-text font-semibold tamil-font text-base focus:outline-none focus:ring-2 focus:ring-primary"
+          className="gold-tile flex-1 min-w-0 rounded-md px-2 py-2 engraved-text font-semibold tamil-font text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-primary"
           style={{ boxShadow: "var(--shadow-raised)" }}
         >
           {TAMIL_YEARS_60.map((y, i) => (
             <option key={i} value={i}>
-              {i + 1}. {y.ta} ({y.en})
+              {y.ta} ({y.en})
             </option>
           ))}
         </select>
-        <DialButton onClick={() => setYearIdx((yearIdx + 1) % 60)}>›</DialButton>
+        <DialButton onClick={() => setYearIdx((yearIdx + 1) % 60)} aria-label="Next year">›</DialButton>
       </div>
     </div>
   );
@@ -249,40 +192,51 @@ function YearDial({ yearIdx, setYearIdx }: { yearIdx: number; setYearIdx: (n: nu
 
 function MonthDial({ monthIdx, setMonthIdx }: { monthIdx: number; setMonthIdx: (n: number) => void }) {
   return (
-    <div className="panel-recessed rounded-xl p-3">
-      <label className="text-[10px] uppercase tracking-widest text-muted-foreground block mb-1.5 px-1">
-        Tamil Month · மாதம்
+    <div className="panel-recessed rounded-xl p-2.5 sm:p-3">
+      <label className="serif-font text-[10px] uppercase tracking-[0.2em] text-muted-foreground block mb-1.5 px-1 text-center">
+        மாதம் · Month
       </label>
-      <div className="flex items-center gap-2">
-        <DialButton onClick={() => setMonthIdx((monthIdx + 11) % 12)}>‹</DialButton>
-        <div className="flex-1 overflow-hidden rounded-md brushed-metal h-[42px] relative" style={{ boxShadow: "var(--shadow-raised)" }}>
-          <motion.div
-            key={monthIdx}
-            initial={{ y: 42, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 22 }}
-            className="absolute inset-0 flex items-center justify-center"
-          >
-            <span className="tamil-font engraved-text text-base md:text-lg font-bold">
-              {TAMIL_MONTHS[monthIdx].ta}
-            </span>
-            <span className="engraved-text/70 text-xs ml-2 opacity-70">
-              {TAMIL_MONTHS[monthIdx].en}
-            </span>
-          </motion.div>
+      <div className="flex items-center gap-1.5">
+        <DialButton onClick={() => setMonthIdx((monthIdx + 11) % 12)} aria-label="Previous month">‹</DialButton>
+        <div
+          className="gold-tile flex-1 min-w-0 overflow-hidden rounded-md h-10 sm:h-11 relative"
+          style={{ boxShadow: "var(--shadow-raised)" }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={monthIdx}
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -30, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 280, damping: 24 }}
+              className="absolute inset-0 flex items-center justify-center gap-2 px-2"
+            >
+              <span className="tamil-font engraved-text text-sm sm:text-base font-bold truncate">
+                {TAMIL_MONTHS[monthIdx].ta}
+              </span>
+              <span className="engraved-text text-[10px] sm:text-xs opacity-70 truncate">
+                {TAMIL_MONTHS[monthIdx].en}
+              </span>
+            </motion.div>
+          </AnimatePresence>
         </div>
-        <DialButton onClick={() => setMonthIdx((monthIdx + 1) % 12)}>›</DialButton>
+        <DialButton onClick={() => setMonthIdx((monthIdx + 1) % 12)} aria-label="Next month">›</DialButton>
       </div>
     </div>
   );
 }
 
-function DialButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function DialButton({
+  onClick,
+  children,
+  ...rest
+}: { onClick: () => void; children: React.ReactNode } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       onClick={onClick}
-      className="brushed-metal w-9 h-9 rounded-full flex items-center justify-center engraved-text font-bold text-lg active:scale-95 transition-transform"
+      className="saffron-tile flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center embossed-text font-bold text-lg active:scale-90 transition-transform"
       style={{ boxShadow: "var(--shadow-raised)" }}
+      {...rest}
     >
       {children}
     </button>
