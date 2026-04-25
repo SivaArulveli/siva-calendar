@@ -61,6 +61,7 @@ export const getRouter = () => {
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
     defaultErrorComponent: DefaultErrorComponent,
+    basepath: import.meta.env.PROD ? '/siva-calendar/' : '/',
   });
 
   return router;

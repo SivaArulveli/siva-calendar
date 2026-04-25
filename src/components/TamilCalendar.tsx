@@ -9,6 +9,11 @@ import {
   getTamilMonthStartDate,
   toTamilNumber,
 } from "@/lib/tamil-calendar";
+import { useAdmin } from "@/hooks/useAdmin";
+import { useDayCards } from "@/hooks/useDayCards";
+import { DayCardModal } from "./DayCardModal";
+import { DayCard } from "@/lib/types";
+import { Download, Edit3 } from "lucide-react";
 
 export function TamilCalendar() {
   const todayYearIdx = useMemo(
@@ -18,6 +23,11 @@ export function TamilCalendar() {
   const [yearIdx, setYearIdx] = useState(todayYearIdx);
   const [monthIdx, setMonthIdx] = useState(0);
   const [showGregorian, setShowGregorian] = useState(true);
+
+  const { isAdmin, login, logout } = useAdmin();
+  const { dayCards, saveCard, deleteCard, getDayCard, exportData } = useDayCards();
+  const [selectedCard, setSelectedCard] = useState<DayCard | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const startWeekday = getStartWeekday(yearIdx, monthIdx);
   const monthMeta = TAMIL_MONTHS[monthIdx];
@@ -43,14 +53,38 @@ export function TamilCalendar() {
       ? Math.round((todayTime - startDate.getTime()) / 86400000) + 1
       : -1;
 
-  // Map Tamil day -> Gregorian {day, monthShort}
+  // Map Tamil day -> Gregorian {day, monthShort, fullDateStr}
   const gregFor = (tamilDay: number) => {
     const d = new Date(startDate);
     d.setDate(d.getDate() + tamilDay - 1);
+    
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    
     return {
       day: d.getDate(),
       mon: d.toLocaleDateString(undefined, { month: "short" }),
+      dateStr,
+      weekday: d.toLocaleDateString('en-US', { weekday: 'short' })
     };
+  };
+
+  const handleCellClick = (gregDateStr: string, tamilDayNumber: number, weekday: string) => {
+    let card = getDayCard(gregDateStr);
+    if (!card && isAdmin) {
+      card = {
+        id: gregDateStr,
+        tamil_year_code: yearMeta.ta, // or en
+        gregorian_date: gregDateStr,
+        tamil_month: monthMeta.ta,
+        tamil_day_number: tamilDayNumber,
+        weekday: weekday,
+      };
+    }
+    
+    if (card || isAdmin) {
+      setSelectedCard(card || null);
+      setTimeout(() => setIsModalOpen(true), 0);
+    }
   };
 
   const rangeLabel = `${startDate.toLocaleDateString(undefined, { day: "numeric", month: "short" })} – ${endDate.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}`;
@@ -123,8 +157,39 @@ export function TamilCalendar() {
           </div>
         </div>
 
-        {/* Toggle: show Gregorian overlap */}
-        <div className="flex items-center justify-end mb-2">
+        {/* Toggle & Admin Controls */}
+        <div className="flex flex-wrap items-center justify-between mb-2 gap-2">
+          <div className="flex items-center gap-2">
+            {isAdmin ? (
+              <>
+                <button
+                  onClick={exportData}
+                  className="flex items-center gap-1.5 panel-recessed rounded-full px-3 py-1.5 text-[11px] sm:text-xs serif-font text-amber-900 hover:bg-amber-200/50 transition-colors"
+                  title="Export Day Cards JSON"
+                >
+                  <Download size={14} />
+                  <span className="font-semibold hidden sm:inline">Export JSON</span>
+                </button>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-1.5 panel-recessed rounded-full px-3 py-1.5 text-[11px] sm:text-xs serif-font text-amber-900 hover:bg-amber-200/50 transition-colors"
+                >
+                  <span className="font-semibold">Exit Admin</span>
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  const p = prompt("Enter admin passcode:");
+                  if (p) login(p);
+                }}
+                className="opacity-20 hover:opacity-100 transition-opacity p-2 rounded-full"
+                title="Admin Login"
+              >
+                <Edit3 size={14} />
+              </button>
+            )}
+          </div>
           <button
             type="button"
             role="switch"
@@ -186,13 +251,18 @@ export function TamilCalendar() {
                 const g = gregFor(n);
                 const isMonthFirst = g.day === 1;
                 return (
-                  <div
+                  <button
                     key={i}
-                    className={`relative aspect-square rounded-md sm:rounded-lg flex flex-col items-center justify-center transition-transform hover:scale-105 ${
+                    onClick={() => handleCellClick(g.dateStr, n, g.weekday)}
+                    className={`relative aspect-square rounded-md sm:rounded-lg flex flex-col items-center justify-center transition-transform hover:scale-105 outline-none focus:ring-2 focus:ring-amber-500/50 ${
                       isToday ? "saffron-tile today-pulse" : "gold-tile"
-                    }`}
+                    } ${getDayCard(g.dateStr) ? "ring-1 ring-amber-600/30" : ""}`}
                     style={{ boxShadow: "var(--shadow-raised)" }}
+                    aria-label={`Tamil day ${n}, Gregorian ${g.mon} ${g.day}`}
                   >
+                    {getDayCard(g.dateStr) && (
+                      <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-600 shadow-sm" />
+                    )}
                     <span
                       className={`text-sm sm:text-base md:text-lg font-bold leading-none ${
                         isToday ? "embossed-text" : "engraved-text"
@@ -211,7 +281,12 @@ export function TamilCalendar() {
                         {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
                       </span>
                     )}
-                  </div>
+                    {getDayCard(g.dateStr)?.title && (
+                      <span className="absolute bottom-1 w-full px-1 text-[8px] sm:text-[9px] truncate text-center text-amber-900/80 font-semibold leading-none">
+                        {getDayCard(g.dateStr)?.title}
+                      </span>
+                    )}
+                  </button>
                 );
               })}
             </motion.div>
@@ -222,6 +297,21 @@ export function TamilCalendar() {
           </p>
         </div>
       </div>
+
+      {/* Day Card Modal */}
+      {selectedCard && (
+        <DayCardModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setTimeout(() => setSelectedCard(null), 200);
+          }}
+          dayCard={getDayCard(selectedCard.id) || selectedCard}
+          isAdmin={isAdmin}
+          onSave={saveCard}
+          onDelete={deleteCard}
+        />
+      )}
     </div>
   );
 }
