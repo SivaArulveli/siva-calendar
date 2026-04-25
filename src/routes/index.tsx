@@ -12,13 +12,11 @@ export const Route = createFileRoute("/")({
       },
     ],
     links: [
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap",
       },
     ],
   }),
@@ -27,10 +25,12 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="min-h-screen bg-background py-10 px-4">
+    <main className="min-h-screen py-6 sm:py-10 px-3 sm:px-4">
       <TamilCalendar />
-      <footer className="text-center text-xs text-muted-foreground mt-8 max-w-2xl mx-auto opacity-60">
-        Mimicking the physical mechanical Tamil calendar — slide the weekday strip to align with the 1st, just like the brass shifter on the wooden plate.
+      <footer className="serif-font text-center text-[11px] sm:text-xs text-muted-foreground mt-6 sm:mt-8 max-w-md mx-auto opacity-80 italic px-4">
+        ✦ காலம் ஓடினாலும், நிரந்தரம் நாட்காட்டி ✦
+        <br />
+        <span className="opacity-70">Time flows on, yet the calendar remains eternal.</span>
       </footer>
     </main>
   );

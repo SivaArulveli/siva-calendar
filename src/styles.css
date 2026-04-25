@@ -62,65 +62,62 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Tamil mechanical calendar — anodized brass + deep teal */
-  --background: oklch(0.22 0.015 220);
-  --foreground: oklch(0.95 0.02 85);
-  --card: oklch(0.28 0.02 220);
+  --radius: 0.875rem;
+  /* Tamil spiritual calendar — temple saffron, sandalwood, kumkum maroon, gold */
+  --background: oklch(0.97 0.03 75);          /* warm sandalwood cream */
+  --foreground: oklch(0.28 0.08 35);          /* deep kumkum brown */
+  --card: oklch(0.94 0.04 70);
 
-  /* Brushed metal palette */
-  --metal-base: oklch(0.78 0.04 85);
-  --metal-light: oklch(0.88 0.05 85);
-  --metal-dark: oklch(0.55 0.05 80);
-  --metal-shadow: oklch(0.18 0.02 220);
-  --brass: oklch(0.72 0.13 80);
-  --brass-deep: oklch(0.5 0.11 70);
-  --engraved: oklch(0.18 0.015 220);
-  --accent-red: oklch(0.55 0.2 25);
+  /* Spiritual palette */
+  --saffron: oklch(0.78 0.17 55);
+  --saffron-deep: oklch(0.62 0.18 45);
+  --kumkum: oklch(0.45 0.18 25);              /* deep red maroon */
+  --gold: oklch(0.82 0.14 85);
+  --gold-deep: oklch(0.62 0.13 75);
+  --sandal: oklch(0.92 0.05 75);
+  --sandal-deep: oklch(0.78 0.07 70);
+  --ink: oklch(0.25 0.07 30);
+  --turmeric: oklch(0.85 0.16 90);
 
-  --gradient-brushed: repeating-linear-gradient(
-    90deg,
-    var(--metal-base) 0px,
-    var(--metal-light) 1px,
-    var(--metal-base) 2px,
-    var(--metal-dark) 3px
-  );
-  --gradient-brass: linear-gradient(180deg, oklch(0.82 0.13 85), var(--brass) 50%, var(--brass-deep));
-  --gradient-panel: linear-gradient(180deg, oklch(0.32 0.02 220), oklch(0.2 0.02 220));
+  --gradient-saffron: linear-gradient(160deg, oklch(0.86 0.15 70) 0%, var(--saffron) 50%, var(--saffron-deep) 100%);
+  --gradient-gold: linear-gradient(180deg, oklch(0.92 0.1 90), var(--gold) 50%, var(--gold-deep));
+  --gradient-sandal: linear-gradient(180deg, oklch(0.96 0.04 75), var(--sandal-deep));
+  --gradient-temple: radial-gradient(ellipse at top, oklch(0.95 0.06 80) 0%, oklch(0.9 0.07 65) 60%, oklch(0.82 0.09 50) 100%);
 
-  --shadow-engraved: inset 0 1px 2px rgba(0,0,0,0.7), inset 0 -1px 1px rgba(255,255,255,0.08);
-  --shadow-raised: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
-  --shadow-deep: 0 10px 30px -8px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-engraved: inset 0 2px 4px oklch(0.4 0.1 30 / 0.25), inset 0 -1px 1px oklch(1 0 0 / 0.5);
+  --shadow-raised: 0 2px 6px oklch(0.4 0.12 30 / 0.2), inset 0 1px 0 oklch(1 0 0 / 0.5);
+  --shadow-glow: 0 0 24px oklch(0.78 0.17 55 / 0.35), 0 4px 16px oklch(0.45 0.18 25 / 0.2);
+  --shadow-deep: 0 20px 50px -12px oklch(0.3 0.1 30 / 0.35), 0 8px 20px oklch(0.4 0.12 30 / 0.2);
 
-  --card-foreground: oklch(0.95 0.02 85);
-  --popover: oklch(0.28 0.02 220);
-  --popover-foreground: oklch(0.95 0.02 85);
-  --primary: var(--brass);
-  --primary-foreground: oklch(0.18 0.015 220);
-  --secondary: oklch(0.32 0.02 220);
-  --secondary-foreground: oklch(0.95 0.02 85);
-  --muted: oklch(0.3 0.02 220);
-  --muted-foreground: oklch(0.7 0.03 85);
-  --accent: var(--brass);
-  --accent-foreground: oklch(0.18 0.015 220);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.98 0.01 85);
-  --border: oklch(0.4 0.02 220);
-  --input: oklch(0.32 0.02 220);
-  --ring: var(--brass);
+  --card-foreground: oklch(0.28 0.08 35);
+  --popover: oklch(0.96 0.04 75);
+  --popover-foreground: oklch(0.28 0.08 35);
+  --primary: var(--kumkum);
+  --primary-foreground: oklch(0.98 0.02 80);
+  --secondary: var(--gold);
+  --secondary-foreground: oklch(0.28 0.08 35);
+  --muted: oklch(0.9 0.04 70);
+  --muted-foreground: oklch(0.45 0.08 40);
+  --accent: var(--saffron);
+  --accent-foreground: oklch(0.98 0.02 80);
+  --destructive: var(--kumkum);
+  --destructive-foreground: oklch(0.98 0.02 80);
+  --border: oklch(0.78 0.09 60);
+  --input: oklch(0.92 0.05 75);
+  --ring: var(--saffron);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.22 0.015 220);
-  --sidebar-foreground: oklch(0.95 0.02 85);
-  --sidebar-primary: var(--brass);
-  --sidebar-primary-foreground: oklch(0.18 0.015 220);
-  --sidebar-accent: oklch(0.3 0.02 220);
-  --sidebar-accent-foreground: oklch(0.95 0.02 85);
-  --sidebar-border: oklch(0.4 0.02 220);
-  --sidebar-ring: var(--brass);
+  --sidebar: var(--sandal);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--kumkum);
+  --sidebar-primary-foreground: oklch(0.98 0.02 80);
+  --sidebar-accent: var(--gold);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: oklch(0.78 0.09 60);
+  --sidebar-ring: var(--saffron);
 }
 
 .dark {
@@ -169,45 +166,103 @@
   }
 }
 
-/* === Tamil Mechanical Calendar utilities === */
-.brushed-metal {
+/* === Tamil Spiritual Calendar utilities === */
+body {
   background-image:
-    repeating-linear-gradient(90deg,
-      rgba(255,255,255,0.06) 0px,
-      rgba(255,255,255,0.12) 1px,
-      rgba(0,0,0,0.05) 2px,
-      rgba(0,0,0,0.10) 3px),
-    var(--gradient-brass);
-  background-blend-mode: overlay, normal;
+    radial-gradient(circle at 20% 10%, oklch(0.92 0.08 60 / 0.6), transparent 50%),
+    radial-gradient(circle at 80% 90%, oklch(0.88 0.1 45 / 0.5), transparent 50%),
+    var(--gradient-temple);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
-.brushed-metal-plate {
+
+.temple-plate {
   background-image:
-    repeating-linear-gradient(90deg,
-      rgba(255,255,255,0.05) 0px,
-      rgba(255,255,255,0.10) 1px,
-      rgba(0,0,0,0.04) 2px,
-      rgba(0,0,0,0.08) 3px),
-    linear-gradient(180deg, oklch(0.82 0.04 85), oklch(0.68 0.05 80));
-  background-blend-mode: overlay, normal;
+    radial-gradient(circle at 50% 0%, oklch(0.95 0.06 80 / 0.8), transparent 70%),
+    var(--gradient-sandal);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
 }
+.temple-plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: var(--gradient-gold);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gold-tile {
+  background-image: var(--gradient-gold);
+  border: 1px solid oklch(0.55 0.12 65 / 0.5);
+}
+.saffron-tile {
+  background-image: var(--gradient-saffron);
+  border: 1px solid oklch(0.5 0.15 35 / 0.4);
+}
+.sandal-tile {
+  background: var(--gradient-sandal);
+  border: 1px solid oklch(0.7 0.08 60 / 0.4);
+}
+
 .engraved-text {
-  color: var(--engraved);
-  text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+  color: var(--ink);
+  text-shadow: 0 1px 0 oklch(1 0 0 / 0.5);
 }
 .embossed-text {
-  color: oklch(0.98 0.02 85);
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.15);
+  color: oklch(0.98 0.03 80);
+  text-shadow: 0 1px 2px oklch(0.3 0.1 30 / 0.6), 0 -1px 0 oklch(1 0 0 / 0.2);
 }
+.kumkum-text {
+  color: var(--kumkum);
+  text-shadow: 0 1px 0 oklch(1 0 0 / 0.4);
+}
+
 .panel-recessed {
-  background: var(--gradient-panel);
+  background: linear-gradient(180deg, oklch(0.88 0.05 70), oklch(0.94 0.04 75));
   box-shadow: var(--shadow-engraved);
-  border: 1px solid oklch(0.15 0.015 220);
+  border: 1px solid oklch(0.75 0.08 60 / 0.5);
 }
+
 .tamil-font {
   font-family: "Noto Sans Tamil", "Latha", "Tamil Sangam MN", system-ui, sans-serif;
 }
-.rivet {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, oklch(0.85 0.04 85), oklch(0.45 0.05 80) 70%, oklch(0.25 0.02 80));
-  box-shadow: inset 0 -1px 1px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.5);
+.serif-font {
+  font-family: "Cormorant Garamond", "Noto Serif Tamil", Georgia, serif;
 }
+
+/* Decorative dot — like a kolam point or a gold stud */
+.kolam-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold), var(--gold-deep) 70%, var(--kumkum));
+  box-shadow: 0 0 6px oklch(0.78 0.17 55 / 0.5);
+}
+
+/* Subtle ornamental divider */
+.ornate-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-deep) 20%, var(--kumkum) 50%, var(--gold-deep) 80%, transparent);
+  position: relative;
+}
+.ornate-divider::after {
+  content: "❋";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background);
+  color: var(--kumkum);
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.55 0.2 30 / 0.5), var(--shadow-raised); }
+  50%      { box-shadow: 0 0 0 6px oklch(0.55 0.2 30 / 0), var(--shadow-raised); }
+}
+.today-pulse { animation: glow-pulse 2.2s ease-in-out infinite; }
