@@ -27,9 +27,22 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to Cloudflare
+      - name: Find Output Directory
+        id: find_dir
+        run: |
+          if [ -d "dist" ]; then
+            echo "dir=dist" >> $GITHUB_OUTPUT
+          elif [ -d ".output/public" ]; then
+            echo "dir=.output/public" >> $GITHUB_OUTPUT
+          elif [ -d "build" ]; then
+            echo "dir=build" >> $GITHUB_OUTPUT
+          else
+            echo "dir=." >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: pages deploy ${{ steps.find_dir.outputs.dir }} --project-name=siva-calendar
