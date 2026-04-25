@@ -99,9 +99,9 @@ export function TamilCalendar() {
             <span className="tamil-font kumkum-text font-semibold">
               {TAMIL_WEEKDAYS[startWeekday].ta}
             </span>
-            <span className="ml-2 opacity-70">
-              ({startDate.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })})
-            </span>
+          </div>
+          <div className="serif-font text-[11px] sm:text-xs mt-1 font-semibold">
+            {rangeLabel}
           </div>
         </div>
 
