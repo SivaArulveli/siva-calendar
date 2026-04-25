@@ -62,52 +62,49 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Tamil mechanical calendar — anodized brass + deep teal */
-  --background: oklch(0.22 0.015 220);
-  --foreground: oklch(0.95 0.02 85);
-  --card: oklch(0.28 0.02 220);
+  --radius: 0.875rem;
+  /* Tamil spiritual calendar — temple saffron, sandalwood, kumkum maroon, gold */
+  --background: oklch(0.97 0.03 75);          /* warm sandalwood cream */
+  --foreground: oklch(0.28 0.08 35);          /* deep kumkum brown */
+  --card: oklch(0.94 0.04 70);
 
-  /* Brushed metal palette */
-  --metal-base: oklch(0.78 0.04 85);
-  --metal-light: oklch(0.88 0.05 85);
-  --metal-dark: oklch(0.55 0.05 80);
-  --metal-shadow: oklch(0.18 0.02 220);
-  --brass: oklch(0.72 0.13 80);
-  --brass-deep: oklch(0.5 0.11 70);
-  --engraved: oklch(0.18 0.015 220);
-  --accent-red: oklch(0.55 0.2 25);
+  /* Spiritual palette */
+  --saffron: oklch(0.78 0.17 55);
+  --saffron-deep: oklch(0.62 0.18 45);
+  --kumkum: oklch(0.45 0.18 25);              /* deep red maroon */
+  --gold: oklch(0.82 0.14 85);
+  --gold-deep: oklch(0.62 0.13 75);
+  --sandal: oklch(0.92 0.05 75);
+  --sandal-deep: oklch(0.78 0.07 70);
+  --ink: oklch(0.25 0.07 30);
+  --turmeric: oklch(0.85 0.16 90);
 
-  --gradient-brushed: repeating-linear-gradient(
-    90deg,
-    var(--metal-base) 0px,
-    var(--metal-light) 1px,
-    var(--metal-base) 2px,
-    var(--metal-dark) 3px
-  );
-  --gradient-brass: linear-gradient(180deg, oklch(0.82 0.13 85), var(--brass) 50%, var(--brass-deep));
-  --gradient-panel: linear-gradient(180deg, oklch(0.32 0.02 220), oklch(0.2 0.02 220));
+  --gradient-saffron: linear-gradient(160deg, oklch(0.86 0.15 70) 0%, var(--saffron) 50%, var(--saffron-deep) 100%);
+  --gradient-gold: linear-gradient(180deg, oklch(0.92 0.1 90), var(--gold) 50%, var(--gold-deep));
+  --gradient-sandal: linear-gradient(180deg, oklch(0.96 0.04 75), var(--sandal-deep));
+  --gradient-temple: radial-gradient(ellipse at top, oklch(0.95 0.06 80) 0%, oklch(0.9 0.07 65) 60%, oklch(0.82 0.09 50) 100%);
 
-  --shadow-engraved: inset 0 1px 2px rgba(0,0,0,0.7), inset 0 -1px 1px rgba(255,255,255,0.08);
-  --shadow-raised: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
-  --shadow-deep: 0 10px 30px -8px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-engraved: inset 0 2px 4px oklch(0.4 0.1 30 / 0.25), inset 0 -1px 1px oklch(1 0 0 / 0.5);
+  --shadow-raised: 0 2px 6px oklch(0.4 0.12 30 / 0.2), inset 0 1px 0 oklch(1 0 0 / 0.5);
+  --shadow-glow: 0 0 24px oklch(0.78 0.17 55 / 0.35), 0 4px 16px oklch(0.45 0.18 25 / 0.2);
+  --shadow-deep: 0 20px 50px -12px oklch(0.3 0.1 30 / 0.35), 0 8px 20px oklch(0.4 0.12 30 / 0.2);
 
-  --card-foreground: oklch(0.95 0.02 85);
-  --popover: oklch(0.28 0.02 220);
-  --popover-foreground: oklch(0.95 0.02 85);
-  --primary: var(--brass);
-  --primary-foreground: oklch(0.18 0.015 220);
-  --secondary: oklch(0.32 0.02 220);
-  --secondary-foreground: oklch(0.95 0.02 85);
-  --muted: oklch(0.3 0.02 220);
-  --muted-foreground: oklch(0.7 0.03 85);
-  --accent: var(--brass);
-  --accent-foreground: oklch(0.18 0.015 220);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.98 0.01 85);
-  --border: oklch(0.4 0.02 220);
-  --input: oklch(0.32 0.02 220);
-  --ring: var(--brass);
+  --card-foreground: oklch(0.28 0.08 35);
+  --popover: oklch(0.96 0.04 75);
+  --popover-foreground: oklch(0.28 0.08 35);
+  --primary: var(--kumkum);
+  --primary-foreground: oklch(0.98 0.02 80);
+  --secondary: var(--gold);
+  --secondary-foreground: oklch(0.28 0.08 35);
+  --muted: oklch(0.9 0.04 70);
+  --muted-foreground: oklch(0.45 0.08 40);
+  --accent: var(--saffron);
+  --accent-foreground: oklch(0.98 0.02 80);
+  --destructive: var(--kumkum);
+  --destructive-foreground: oklch(0.98 0.02 80);
+  --border: oklch(0.78 0.09 60);
+  --input: oklch(0.92 0.05 75);
+  --ring: var(--saffron);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
