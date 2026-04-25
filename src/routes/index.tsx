@@ -4,7 +4,7 @@ import { TamilCalendar } from "@/components/TamilCalendar";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tamil Perpetual Calendar · தமிழ் நிரந்தர நாட்காட்டி" },
+      { title: "Siva Arul Vaibhava Panchangam · சிவ அருள் வைபவ பஞ்சாங்கம்" },
       {
         name: "description",
         content:
