@@ -140,6 +140,8 @@ export function TamilCalendar() {
                   return <div key={i} className="aspect-square" />;
                 }
                 const isToday = n === todayInMonth;
+                const g = gregFor(n);
+                const isMonthFirst = g.day === 1;
                 return (
                   <div
                     key={i}
@@ -149,18 +151,25 @@ export function TamilCalendar() {
                     style={{ boxShadow: "var(--shadow-raised)" }}
                   >
                     <span
-                      className={`text-base sm:text-lg md:text-xl font-bold leading-none ${
+                      className={`text-sm sm:text-base md:text-lg font-bold leading-none ${
                         isToday ? "embossed-text" : "engraved-text"
                       }`}
                     >
                       {n}
                     </span>
                     <span
-                      className={`tamil-font text-[9px] sm:text-[10px] leading-none mt-0.5 opacity-80 ${
+                      className={`tamil-font text-[8px] sm:text-[9px] leading-none mt-0.5 opacity-70 ${
                         isToday ? "embossed-text" : "engraved-text"
                       }`}
                     >
                       {toTamilNumber(n)}
+                    </span>
+                    <span
+                      className={`absolute bottom-0.5 right-1 serif-font text-[8px] sm:text-[9px] font-semibold leading-none opacity-80 ${
+                        isToday ? "embossed-text" : "kumkum-text"
+                      }`}
+                    >
+                      {isMonthFirst ? `${g.mon} ${g.day}` : g.day}
                     </span>
                   </div>
                 );
