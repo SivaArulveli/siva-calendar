@@ -150,7 +150,15 @@ function DayCell({ cell, isAdmin, onClick }: { cell: CellData; isAdmin: boolean;
           {/* Middle Band: Visual Image */}
           <div className="relative w-full bg-[#f1f3f4] flex items-center justify-center overflow-hidden shrink-0 border-b border-[#dadce0]/50">
             {card.visual?.placeholder_image_url ? (
-              <img src={resolveAsset(card.visual.placeholder_image_url)} alt={card.visual.placeholder_alt_text} className="w-full h-auto object-contain transition-transform group-hover:scale-105" />
+              <img 
+                src={resolveAsset(card.visual.placeholder_image_url)} 
+                alt={card.visual.placeholder_alt_text} 
+                className="w-full h-auto object-contain transition-transform group-hover:scale-105" 
+                onError={(e) => {
+                  console.error("Image failed to load:", card.visual.placeholder_image_url);
+                  e.currentTarget.src = resolveAsset("/images/lord_shiva.png") || "";
+                }}
+              />
             ) : (
               <div className="flex flex-col items-center opacity-40">
                 <ImageIcon className="w-5 h-5 text-[#5f6368]" />
@@ -280,8 +288,10 @@ export function DayCardsDashboard() {
   const end = new Date(start); end.setDate(end.getDate() + meta.days - 1);
 
   const handleCellClick = (cell: CellData) => {
+    console.log("Cell clicked:", cell);
     if (cell.isPadding || !cell.gregDate) return;
     if (cell.dayCard) {
+      console.log("Opening card detail:", cell.dayCard);
       setSelectedCard(cell.dayCard);
       setIsDetailOpen(true);
     } else if (isAdmin) {

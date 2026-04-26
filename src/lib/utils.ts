@@ -7,12 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export function resolveAsset(path: string | undefined): string | undefined {
   if (!path) return undefined;
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
   
-  // Handle absolute paths by prepending the Vite base URL
-  const base = import.meta.env.BASE_URL;
-  if (path.startsWith('/') && base !== '/') {
-    return `${base.replace(/\/$/, '')}${path}`;
-  }
-  return path;
+  const base = import.meta.env.BASE_URL || "/";
+  const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  
+  return `${cleanBase}${cleanPath}`;
 }
