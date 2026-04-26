@@ -204,26 +204,47 @@ const tamilDays = ["ஞாயிறு", "திங்கள்", "செவ்�
 const englishDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 // Approx Tamil Calendar logic just for sample generation (UI handles accurate month changes)
+// Correct Tamil Calendar start dates for Parabhava (2026)
+const TAMIL_MONTHS_CONFIG = [
+  { en: "Chithirai", ta: "சித்திரை", gregStartMonth: 3, gregStartDay: 14 },
+  { en: "Vaikasi",   ta: "வைகாசி",   gregStartMonth: 4, gregStartDay: 15 },
+  { en: "Aani",      ta: "ஆனி",      gregStartMonth: 5, gregStartDay: 15 },
+  { en: "Aadi",      ta: "ஆடி",      gregStartMonth: 6, gregStartDay: 17 },
+  { en: "Aavani",    ta: "ஆவணி",    gregStartMonth: 7, gregStartDay: 17 },
+  { en: "Purattasi", ta: "புரட்டாசி", gregStartMonth: 8, gregStartDay: 17 },
+  { en: "Aippasi",   ta: "ஐப்பசி",   gregStartMonth: 9, gregStartDay: 18 },
+  { en: "Karthigai", ta: "கார்த்திகை", gregStartMonth: 10, gregStartDay: 17 },
+  { en: "Margazhi",  ta: "மார்கழி",  gregStartMonth: 11, gregStartDay: 16 },
+  { en: "Thai",      ta: "தை",       gregStartMonth: 0, gregStartDay: 14 },
+  { en: "Maasi",     ta: "மாசி",     gregStartMonth: 1, gregStartDay: 13 },
+  { en: "Panguni",   ta: "பங்குனி",  gregStartMonth: 2, gregStartDay: 14 },
+];
+
 const getTamilApprox = (d) => {
-  const m = d.getUTCMonth();
-  const day = d.getUTCDate();
-  // Very rough approximation for sample text fallback when no exact event maps it
-  const map = [
-    { en: "Margazhi", ta: "மார்கழி" }, // Jan
-    { en: "Thai", ta: "தை" }, // Feb
-    { en: "Maasi", ta: "மாசி" }, // Mar
-    { en: "Panguni", ta: "பங்குனி" }, // Apr
-    { en: "Chithirai", ta: "சித்திரை" }, // May
-    { en: "Vaikasi", ta: "வைகாசி" }, // Jun
-    { en: "Aani", ta: "ஆனி" }, // Jul
-    { en: "Aadi", ta: "ஆடி" }, // Aug
-    { en: "Aavani", ta: "ஆவணி" }, // Sep
-    { en: "Purattasi", ta: "புரட்டாசி" }, // Oct
-    { en: "Aippasi", ta: "ஐப்பசி" }, // Nov
-    { en: "Karthigai", ta: "கார்த்திகை" }, // Dec
-  ];
-  return { taMonth: map[m].ta, enMonth: map[m].en, taDay: day };
+  const gMonth = d.getUTCMonth();
+  const gDay = d.getUTCDate();
+  const gYear = d.getUTCFullYear();
+
+  for (let i = TAMIL_MONTHS_CONFIG.length - 1; i >= 0; i--) {
+    const m = TAMIL_MONTHS_CONFIG[i];
+    const startMonth = m.gregStartMonth;
+    const startDay = m.gregStartDay;
+    
+    if (gMonth > startMonth || (gMonth === startMonth && gDay >= startDay)) {
+      const startDate = new Date(Date.UTC(gYear, startMonth, startDay));
+      const diffTime = d.getTime() - startDate.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      return { taMonth: m.ta, enMonth: m.en, taDay: diffDays };
+    }
+  }
+
+  const panguni = TAMIL_MONTHS_CONFIG[11];
+  const lastYearStart = new Date(Date.UTC(gYear - 1, panguni.gregStartMonth, panguni.gregStartDay));
+  const diffTime = d.getTime() - lastYearStart.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  return { taMonth: panguni.ta, enMonth: panguni.en, taDay: diffDays };
 };
+
 
 const generateFullCards = () => {
   const dayCards = [];
@@ -331,7 +352,7 @@ const generateFullCards = () => {
   };
 
   fs.writeFileSync(
-    path.join(__dirname, "public/data/day_cards.json"),
+    path.join(__dirname, "../public/data/day_cards.json"),
     JSON.stringify(exportData, null, 2),
   );
   console.log("Full year populated in public/data/day_cards.json");
