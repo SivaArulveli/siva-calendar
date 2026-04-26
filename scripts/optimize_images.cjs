@@ -1,20 +1,20 @@
-const fs = require('fs');
-const path = require('path');
-const sharp = require('sharp');
+const fs = require("fs");
+const path = require("path");
+const sharp = require("sharp");
 
-const imagesDir = path.join(__dirname, 'public/images');
+const imagesDir = path.join(__dirname, "public/images");
 
 const optimizeImages = async () => {
   const files = fs.readdirSync(imagesDir);
-  const jpgFiles = files.filter(f => f.toLowerCase().endsWith('.jpg'));
-  
+  const jpgFiles = files.filter((f) => f.toLowerCase().endsWith(".jpg"));
+
   const webpFiles = [];
 
   for (const file of jpgFiles) {
     const inputPath = path.join(imagesDir, file);
     const filenameWithoutExt = path.parse(file).name;
     const outputPath = path.join(imagesDir, `${filenameWithoutExt}.webp`);
-    
+
     try {
       await sharp(inputPath)
         .resize({ width: 800, withoutEnlargement: true })
@@ -26,7 +26,7 @@ const optimizeImages = async () => {
       console.error(`Failed to optimize ${file}:`, err);
     }
   }
-  
+
   console.log("Optimized images:", JSON.stringify(webpFiles));
 };
 

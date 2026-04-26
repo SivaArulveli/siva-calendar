@@ -29,7 +29,7 @@ export function FloatingDayCard({ dayCard, onClick }: FloatingDayCardProps) {
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/40 to-transparent" />
-        
+
         {/* Date Badge */}
         <div className="absolute bottom-4 left-5 right-5 flex flex-col gap-1">
           {dayCard.tamil_date?.label_ta && (
@@ -54,16 +54,23 @@ export function FloatingDayCard({ dayCard, onClick }: FloatingDayCardProps) {
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(var(--color-accent),0.8)]" />
               <span className="text-xs font-semibold uppercase tracking-wider text-accent">
-                {dayCard.events.length} Event{dayCard.events.length !== 1 ? 's' : ''}
+                {dayCard.events.length} Event{dayCard.events.length !== 1 ? "s" : ""}
               </span>
             </div>
-            
+
             <div className="space-y-1.5">
               {dayCard.events.slice(0, 2).map((event, idx) => {
                 return (
-                  <div key={idx} className="flex justify-between items-center text-sm bg-white/5 rounded-md px-2.5 py-1.5">
-                    <span className="truncate font-medium text-foreground/80 mr-2">{event.title_ta}</span>
-                    <span className="text-xs text-primary font-mono shrink-0">{event.importance_level}</span>
+                  <div
+                    key={idx}
+                    className="flex justify-between items-center text-sm bg-white/5 rounded-md px-2.5 py-1.5"
+                  >
+                    <span className="truncate font-medium text-foreground/80 mr-2">
+                      {event.title_ta}
+                    </span>
+                    <span className="text-xs text-primary font-mono shrink-0">
+                      {event.importance_level}
+                    </span>
                   </div>
                 );
               })}
@@ -76,7 +83,7 @@ export function FloatingDayCard({ dayCard, onClick }: FloatingDayCardProps) {
           </div>
         )}
       </div>
-      
+
       {/* Subtle hover glow border */}
       <div className="absolute inset-0 rounded-3xl ring-1 ring-white/0 group-hover:ring-primary/50 transition-all duration-300 pointer-events-none" />
     </motion.div>

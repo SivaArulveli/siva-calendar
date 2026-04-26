@@ -7,11 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export function resolveAsset(path: string | undefined): string | undefined {
   if (!path) return undefined;
-  if (path.startsWith('http') || path.startsWith('data:')) return path;
-  
+  if (path.startsWith("http") || path.startsWith("data:")) return path;
+
   const base = import.meta.env.BASE_URL || "/";
-  const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  
+  const cleanBase = base.endsWith("/") ? base.slice(0, -1) : base;
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+
   return `${cleanBase}${cleanPath}`;
 }
