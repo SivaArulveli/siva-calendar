@@ -20,6 +20,7 @@ import {
   Upload,
   LogOut,
   Plus,
+  RefreshCw,
   Moon,
   Sun,
   Sunrise,
@@ -511,6 +512,19 @@ export function DayCardsDashboard() {
                 </Button>
                 <Button
                   size="sm"
+                  onClick={() => {
+                    if (confirm("This will clear all imported cards and reset to the default calendar. Continue?")) {
+                      localStorage.removeItem("local_day_cards");
+                      window.location.reload();
+                    }
+                  }}
+                  variant="destructive"
+                  className="text-xs gap-1.5 rounded-lg"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" /> Reset Data
+                </Button>
+                <Button
+                  size="sm"
                   onClick={logout}
                   variant="ghost"
                   className="text-[#5f6368] hover:text-[#202124] text-xs gap-1.5 hover:bg-[#f8f9fa] rounded-lg"
@@ -519,17 +533,32 @@ export function DayCardsDashboard() {
                 </Button>
               </>
             ) : (
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-[#dadce0] text-[#5f6368] hover:bg-[#f8f9fa] hover:text-[#202124] text-xs bg-white rounded-lg"
-                onClick={() => {
-                  const c = prompt("Passcode:");
-                  if (c) login(c);
-                }}
-              >
-                Admin
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-[#dadce0] text-[#5f6368] hover:bg-[#f8f9fa] hover:text-[#202124] text-xs bg-white rounded-lg"
+                  onClick={() => {
+                    if (confirm("This will clear all your imported data. Use this if you see wrong month labels like Panguni on Chithirai. Proceed?")) {
+                       localStorage.removeItem("local_day_cards");
+                       window.location.reload();
+                    }
+                  }}
+                >
+                  Clear Data
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-[#dadce0] text-[#5f6368] hover:bg-[#f8f9fa] hover:text-[#202124] text-xs bg-white rounded-lg"
+                  onClick={() => {
+                    const c = prompt("Passcode:");
+                    if (c) login(c);
+                  }}
+                >
+                  Admin
+                </Button>
+              </div>
             )}
           </div>
         </div>
