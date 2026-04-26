@@ -1,0 +1,84 @@
+{
+  "panchangam_title": "Siva Vaibhava Panchangam - Vaikasi Test",
+  "tamil_month": { "ta": "வைகாசி", "en": "Vaikasi" },
+  "tamil_year": { "ta": "பராபவ", "en": "Parabhava" },
+  "gregorian_range": {
+    "start": "2026-05-15",
+    "end": "2026-06-14",
+    "days": 31
+  },
+  "days": [
+    {
+      "id": "2026-05-28",
+      "tamil_date": {
+        "label_ta": "வைகாசி 14",
+        "label_en": "Vaikasi 14",
+        "day_ta": "14",
+        "day_en": "14"
+      },
+      "gregorian_date": {
+        "iso": "2026-05-28",
+        "display_en": "May 28, 2026"
+      },
+      "weekday": {
+        "ta": "வியாழன்",
+        "en": "Thursday"
+      },
+      "visual": {
+        "placeholder_image_url": "/images/Siva-1.webp",
+        "placeholder_alt_text": "100th Jenma Dinam",
+        "theme_tag": "regular"
+      },
+      "cycles": {
+        "lunar_phase_icon": "new_moon",
+        "solar_cycle_icon": "uttarayana"
+      },
+      "events": [
+        {
+          "title_ta": "சித்திரை",
+          "title_en": "Chithirai",
+          "description_ta": "100th jenma dinam",
+          "description_en": "100th jenma dinam",
+          "importance_level": "high",
+          "icon": "star"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-05",
+      "tamil_date": {
+        "label_ta": "வைகாசி 22",
+        "label_en": "Vaikasi 22",
+        "day_ta": "22",
+        "day_en": "22"
+      },
+      "gregorian_date": {
+        "iso": "2026-06-05",
+        "display_en": "June 5, 2026"
+      },
+      "weekday": {
+        "ta": "வெள்ளி",
+        "en": "Friday"
+      },
+      "visual": {
+        "placeholder_image_url": "/images/SivaSitting.webp",
+        "placeholder_alt_text": "Thiruoonam",
+        "theme_tag": "regular"
+      },
+      "cycles": {
+        "lunar_phase_icon": "new_moon",
+        "solar_cycle_icon": "uttarayana"
+      },
+      "events": [
+        {
+          "title_ta": "Thiruoonam",
+          "title_en": "Thiruoonam",
+          "description_ta": "Siva Swamigal Sidhi natchathira Abhishegam",
+          "description_en": "Siva Swamigal Sidhi natchathira Abhishegam",
+          "importance_level": "high",
+          "icon": "star"
+        }
+      ]
+    }
+  ]
+}

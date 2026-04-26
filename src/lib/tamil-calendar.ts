@@ -77,15 +77,15 @@ export function getTamilMonthStartDate(yearIndex: number, monthIndex: number, cy
     Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
     Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
   };
-  // Months Jan, Feb, Mar fall in the next Gregorian year of the Tamil year cycle
   const gMonth = monthMap[monStr];
   const yearForMonth = gMonth <= 2 ? startGregYear + 1 : startGregYear;
-  return new Date(yearForMonth, gMonth, parseInt(dayStr, 10));
+  // Return a Date object set to UTC midnight
+  return new Date(Date.UTC(yearForMonth, gMonth, parseInt(dayStr, 10)));
 }
 
 /** Returns 0..6 (Sun..Sat) representing the weekday of the 1st of the chosen Tamil month. */
 export function getStartWeekday(yearIndex: number, monthIndex: number, cycleOffset = 0): number {
-  return getTamilMonthStartDate(yearIndex, monthIndex, cycleOffset).getDay();
+  return getTamilMonthStartDate(yearIndex, monthIndex, cycleOffset).getUTCDay();
 }
 
 /** Tamil numerals for fun display */

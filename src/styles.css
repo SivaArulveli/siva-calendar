@@ -4,28 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,224 +30,100 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 :root {
-  --radius: 0.875rem;
-  /* Tamil spiritual calendar — temple saffron, sandalwood, kumkum maroon, gold */
-  --background: oklch(0.97 0.03 75);          /* warm sandalwood cream */
-  --foreground: oklch(0.28 0.08 35);          /* deep kumkum brown */
-  --card: oklch(0.94 0.04 70);
+  --radius: 0.75rem;
 
-  /* Spiritual palette */
-  --saffron: oklch(0.78 0.17 55);
-  --saffron-deep: oklch(0.62 0.18 45);
-  --kumkum: oklch(0.45 0.18 25);              /* deep red maroon */
-  --gold: oklch(0.82 0.14 85);
-  --gold-deep: oklch(0.62 0.13 75);
-  --sandal: oklch(0.92 0.05 75);
-  --sandal-deep: oklch(0.78 0.07 70);
-  --ink: oklch(0.25 0.07 30);
-  --turmeric: oklch(0.85 0.16 90);
+  /* ── Google Material Blog Light Theme ── */
+  --background:        #f1f3f4;   /* Google's page bg */
+  --foreground:        #202124;   /* Google dark text */
+  --card:              #ffffff;
+  --card-foreground:   #202124;
+  --popover:           #ffffff;
+  --popover-foreground:#202124;
+  --primary:           #1a73e8;   /* Google Blue */
+  --primary-foreground:#ffffff;
+  --secondary:         #e8f0fe;   /* Blue tint bg */
+  --secondary-foreground:#1a73e8;
+  --muted:             #f8f9fa;
+  --muted-foreground:  #5f6368;   /* Google secondary text */
+  --accent:            #ea4335;   /* Google Red — for today */
+  --accent-foreground: #ffffff;
+  --destructive:       #d93025;
+  --destructive-foreground: #ffffff;
+  --border:            #dadce0;   /* Google border */
+  --input:             #f8f9fa;
+  --ring:              #1a73e8;
 
-  --gradient-saffron: linear-gradient(160deg, oklch(0.86 0.15 70) 0%, var(--saffron) 50%, var(--saffron-deep) 100%);
-  --gradient-gold: linear-gradient(180deg, oklch(0.92 0.1 90), var(--gold) 50%, var(--gold-deep));
-  --gradient-sandal: linear-gradient(180deg, oklch(0.96 0.04 75), var(--sandal-deep));
-  --gradient-temple: radial-gradient(ellipse at top, oklch(0.95 0.06 80) 0%, oklch(0.9 0.07 65) 60%, oklch(0.82 0.09 50) 100%);
-
-  --shadow-engraved: inset 0 2px 4px oklch(0.4 0.1 30 / 0.25), inset 0 -1px 1px oklch(1 0 0 / 0.5);
-  --shadow-raised: 0 2px 6px oklch(0.4 0.12 30 / 0.2), inset 0 1px 0 oklch(1 0 0 / 0.5);
-  --shadow-glow: 0 0 24px oklch(0.78 0.17 55 / 0.35), 0 4px 16px oklch(0.45 0.18 25 / 0.2);
-  --shadow-deep: 0 20px 50px -12px oklch(0.3 0.1 30 / 0.35), 0 8px 20px oklch(0.4 0.12 30 / 0.2);
-
-  --card-foreground: oklch(0.28 0.08 35);
-  --popover: oklch(0.96 0.04 75);
-  --popover-foreground: oklch(0.28 0.08 35);
-  --primary: var(--kumkum);
-  --primary-foreground: oklch(0.98 0.02 80);
-  --secondary: var(--gold);
-  --secondary-foreground: oklch(0.28 0.08 35);
-  --muted: oklch(0.9 0.04 70);
-  --muted-foreground: oklch(0.45 0.08 40);
-  --accent: var(--saffron);
-  --accent-foreground: oklch(0.98 0.02 80);
-  --destructive: var(--kumkum);
-  --destructive-foreground: oklch(0.98 0.02 80);
-  --border: oklch(0.78 0.09 60);
-  --input: oklch(0.92 0.05 75);
-  --ring: var(--saffron);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: var(--sandal);
-  --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--kumkum);
-  --sidebar-primary-foreground: oklch(0.98 0.02 80);
-  --sidebar-accent: var(--gold);
-  --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: oklch(0.78 0.09 60);
-  --sidebar-ring: var(--saffron);
-}
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  /* Google Material elevation shadows */
+  --shadow-1: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  --shadow-2: 0 1px 2px rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
+  --shadow-3: 0 4px 8px 3px rgba(60,64,67,.15), 0 1px 3px rgba(60,64,67,.3);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
+  * { border-color: var(--color-border); }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: "Roboto", "Google Sans", system-ui, sans-serif;
+    min-height: 100vh;
   }
 }
 
-/* === Tamil Spiritual Calendar utilities === */
-body {
-  background-image:
-    radial-gradient(circle at 20% 10%, oklch(0.92 0.08 60 / 0.6), transparent 50%),
-    radial-gradient(circle at 80% 90%, oklch(0.88 0.1 45 / 0.5), transparent 50%),
-    var(--gradient-temple);
-  background-attachment: fixed;
-  min-height: 100vh;
+/* Material Card */
+.mat-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.2s ease;
+}
+.mat-card:hover { box-shadow: var(--shadow-2); }
+
+/* Material Card elevated */
+.mat-card-elevated {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+}
+.mat-card-elevated:hover { box-shadow: var(--shadow-3); }
+
+/* Google primary chip */
+.g-chip {
+  background: var(--secondary);
+  color: var(--primary);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
-.temple-plate {
-  background-image:
-    radial-gradient(circle at 50% 0%, oklch(0.95 0.06 80 / 0.8), transparent 70%),
-    var(--gradient-sandal);
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-}
-.temple-plate::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: var(--gradient-gold);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+/* Today badge */
+.today-badge {
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(234,67,53,0.4);
 }
 
-.gold-tile {
-  background-image: var(--gradient-gold);
-  border: 1px solid oklch(0.55 0.12 65 / 0.5);
-}
-.saffron-tile {
-  background-image: var(--gradient-saffron);
-  border: 1px solid oklch(0.5 0.15 35 / 0.4);
-}
-.sandal-tile {
-  background: var(--gradient-sandal);
-  border: 1px solid oklch(0.7 0.08 60 / 0.4);
-}
-
-.engraved-text {
-  color: var(--ink);
-  text-shadow: 0 1px 0 oklch(1 0 0 / 0.5);
-}
-.embossed-text {
-  color: oklch(0.98 0.03 80);
-  text-shadow: 0 1px 2px oklch(0.3 0.1 30 / 0.6), 0 -1px 0 oklch(1 0 0 / 0.2);
-}
-.kumkum-text {
-  color: var(--kumkum);
-  text-shadow: 0 1px 0 oklch(1 0 0 / 0.4);
-}
-
-.panel-recessed {
-  background: linear-gradient(180deg, oklch(0.88 0.05 70), oklch(0.94 0.04 75));
-  box-shadow: var(--shadow-engraved);
-  border: 1px solid oklch(0.75 0.08 60 / 0.5);
-}
-
+/* Tamil font */
 .tamil-font {
   font-family: "Noto Sans Tamil", "Latha", "Tamil Sangam MN", system-ui, sans-serif;
 }
-.serif-font {
-  font-family: "Cormorant Garamond", "Noto Serif Tamil", Georgia, serif;
+
+/* Serif for quotes */
+.serif-font, .serif-quote {
+  font-family: "Georgia", "Noto Serif Tamil", serif;
 }
 
-/* Decorative dot — like a kolam point or a gold stud */
-.kolam-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--gold), var(--gold-deep) 70%, var(--kumkum));
-  box-shadow: 0 0 6px oklch(0.78 0.17 55 / 0.5);
-}
-
-/* Subtle ornamental divider */
-.ornate-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-deep) 20%, var(--kumkum) 50%, var(--gold-deep) 80%, transparent);
-  position: relative;
-}
-.ornate-divider::after {
-  content: "❋";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--background);
-  color: var(--kumkum);
-  padding: 0 8px;
-  font-size: 12px;
-}
-
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 oklch(0.55 0.2 30 / 0.5), var(--shadow-raised); }
-  50%      { box-shadow: 0 0 0 6px oklch(0.55 0.2 30 / 0), var(--shadow-raised); }
-}
-.today-pulse { animation: glow-pulse 2.2s ease-in-out infinite; }
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f3f4; }
+::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #bdc1c6; }
