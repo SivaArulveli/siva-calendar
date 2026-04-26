@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MonthConfig, MonthsData } from '@/lib/types';
+import { resolveAsset } from '@/lib/utils';
 
 export function useMonths() {
   const [months, setMonths] = useState<MonthConfig[]>([]);
@@ -9,7 +10,7 @@ export function useMonths() {
   useEffect(() => {
     const fetchMonths = async () => {
       try {
-        const response = await fetch('/data/months.json');
+        const response = await fetch(resolveAsset('/data/months.json') || '/data/months.json');
         if (!response.ok) {
           // It's okay if the file doesn't exist yet, we'll start with an empty array
           if (response.status === 404) {

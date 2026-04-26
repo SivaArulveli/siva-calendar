@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { DayCard, DayCardsData, MonthExport } from '../lib/types';
+import { resolveAsset } from '../lib/utils';
 
 // Migration function to convert old simple cards to new complex schema if needed
 function migrateOldCard(card: any): DayCard {
@@ -46,7 +47,7 @@ export function useDayCards() {
   useEffect(() => {
     const loadCards = async () => {
       try {
-        const response = await fetch('/data/day_cards.json');
+        const response = await fetch(resolveAsset('/data/day_cards.json') || '/data/day_cards.json');
         let data: any = { dayCards: [] };
         if (response.ok) {
           data = await response.json();
