@@ -7,6 +7,7 @@ import {
   getTamilMonthStartDate,
 } from "../lib/tamil-calendar";
 import { DayCard, MonthExport } from "../lib/types";
+import { resolveAsset } from "../lib/utils";
 import { useDayCards } from "../hooks/useDayCards";
 import { DayCardModal } from "./DayCardModal";
 import { DayCardForm } from "./DayCardForm";
@@ -149,7 +150,7 @@ function DayCell({ cell, isAdmin, onClick }: { cell: CellData; isAdmin: boolean;
           {/* Middle Band: Visual Image */}
           <div className="relative w-full bg-[#f1f3f4] flex items-center justify-center overflow-hidden shrink-0 border-b border-[#dadce0]/50">
             {card.visual?.placeholder_image_url ? (
-              <img src={card.visual.placeholder_image_url} alt={card.visual.placeholder_alt_text} className="w-full h-auto object-contain transition-transform group-hover:scale-105" />
+              <img src={resolveAsset(card.visual.placeholder_image_url)} alt={card.visual.placeholder_alt_text} className="w-full h-auto object-contain transition-transform group-hover:scale-105" />
             ) : (
               <div className="flex flex-col items-center opacity-40">
                 <ImageIcon className="w-5 h-5 text-[#5f6368]" />

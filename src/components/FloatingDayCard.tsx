@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { DayCard } from "../lib/types";
+import { resolveAsset } from "../lib/utils";
 
 interface FloatingDayCardProps {
   dayCard: DayCard;
@@ -18,7 +19,7 @@ export function FloatingDayCard({ dayCard, onClick }: FloatingDayCardProps) {
       <div className="relative h-48 shrink-0 overflow-hidden bg-black/20">
         {dayCard.visual?.placeholder_image_url ? (
           <img
-            src={dayCard.visual.placeholder_image_url}
+            src={resolveAsset(dayCard.visual.placeholder_image_url)}
             alt="Event visual"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { DayCard } from "../lib/types";
+import { resolveAsset } from "../lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { DayCardForm } from "./DayCardForm";
@@ -40,7 +41,7 @@ export function DayCardModal({ isOpen, onClose, dayCard, isAdmin, onSave, onDele
             {/* ── Hero Image / Visual ── */}
             <div className="relative h-56 sm:h-72 shrink-0 overflow-hidden bg-[#f1f3f4] flex justify-center items-center">
               {dayCard.visual?.placeholder_image_url ? (
-                <img src={dayCard.visual.placeholder_image_url} alt={dayCard.visual.placeholder_alt_text} className="w-full h-full object-cover" />
+                <img src={resolveAsset(dayCard.visual.placeholder_image_url)} alt={dayCard.visual.placeholder_alt_text} className="w-full h-full object-cover" />
               ) : (
                 <ImageIcon className="w-12 h-12 text-[#dadce0]" />
               )}
