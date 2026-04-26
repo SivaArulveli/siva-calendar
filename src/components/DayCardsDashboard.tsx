@@ -263,14 +263,18 @@ export function DayCardsDashboard() {
       const dt = new Date(start);
       dt.setUTCDate(dt.getUTCDate() + d);
       const ds = dt.toISOString().split('T')[0];
-      const tamilDay = d + 1; // Explicit Tamil day number (1 to 31/32)
+      const tamilDay = d + 1;
+      const card = cardMap[ds];
+      // Only show the card if it matches the current Tamil month to prevent "bleeding" from bad data
+      const isCorrectMonth = card?.tamil_date?.label_ta?.includes(meta.ta) || card?.tamil_date?.label_en?.includes(meta.en);
+      
       out.push({
         gregDate: ds,
         gregDay: dt.getUTCDate(),
         gregMonthShort: dt.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }),
         isToday: ds === todayISO,
         isMonthBoundary: dt.getUTCDate() === 1 && d > 0,
-        dayCard: cardMap[ds],
+        dayCard: isCorrectMonth ? card : undefined,
         isPadding: false,
         tamilDay: tamilDay // Pass the explicit Tamil day number to the cell data
       });
